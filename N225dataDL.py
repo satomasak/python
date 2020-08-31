@@ -52,7 +52,6 @@ shutil.move('C:\\Users\\sato\\Downloads\\'+fileName, 'C:\\Users\\sato\\Desktop\\
 
 
 #３.以下、デリバティブ建玉残高表から必要なデータをvolume&open_contract.xlsx張り付ける
-import pandas as pd
 import openpyxl as px
 #デリバティブ建玉残高表の拡張子が.xlsであるため、excel2003以前のエクセルを操作するためのxlrdライブラリをインポート
 import xlrd
@@ -60,9 +59,42 @@ import xlrd
 ds = xlrd.open_workbook('C:\\Users\\sato\\Desktop\\datasource\\'+fileName)
 #シートの読み込み
 sheet01 = ds.sheet_by_name('デリバティブ建玉残高状況')
+#貼り付け先エクセルの読み込み
+vc = px.load_workbook('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
+#シートの読み込み
+sheet02 = vc['vol']
+#貼り付けをする4行目に行を挿入
+sheet02.insert_rows(4)
+日付のセルに本日の日付を挿入
+sheet02["B4"] = day
+sheet02["L4"] = day
 #取引高のコピー
-n225Vol = sheet01.cell(36,2)    #N225ラージ
-n225minVol = sheet01.cell(33,9) #N225miniの取引高
-topixVol = sheet01.cell(42,2)   #topixの取引高
-putVol = sheet01.cell(147,2)    #プットオプションの取引高
-callVol = sheet01.cell(148,2)   #コールオプションの取引高
+sheet02["C4"].value = sheet01.cell(36,2).value  #N225全体
+sheet02["D4"].value = sheet01.cell(17,2).value  #N225期近
+sheet02["E4"].value = sheet01.cell(33,9).value  #N225mini全体
+sheet02["F4"].value = sheet01.cell(17,9).value  #N225mini期近
+sheet02["G4"].value = sheet01.cell(42,2).value  #topix全体
+sheet02["H4"].value = sheet01.cell(37,2).value  #topix期近
+sheet02["I4"].value = sheet01.cell(147,2).value #プット全体
+sheet02["J4"].value = sheet01.cell(148,2).value #コール全体
+#残玉のコピー
+sheet02["M4"].value = sheet01.cell(36,3).value  #N225全体
+sheet02["O4"].value = sheet01.cell(17,3).value  #N225期近
+sheet02["Q4"].value = sheet01.cell(33,10).value #N225mini全体
+sheet02["S4"].value = sheet01.cell(17,10).value #N225mini期近
+sheet02["U4"].value = sheet01.cell(42,3).value  #topix全体
+sheet02["W4"].value = sheet01.cell(37,3).value  #topix期近
+sheet02["Y4"].value = sheet01.cell(147,3).value #プット全体
+sheet02["AA4"].value = sheet01.cell(148,3).value #コール全体
+#残玉の前日比のコピー
+sheet02["N4"].value = sheet01.cell(36,4).value
+sheet02["P4"].value = sheet01.cell(17,4).value
+sheet02["R4"].value = sheet01.cell(33,11).value
+sheet02["T4"].value = sheet01.cell(17,11).value
+sheet02["V4"].value = sheet01.cell(42,4).value
+sheet02["X4"].value = sheet01.cell(37,4).value
+sheet02["Z4"].value = sheet01.cell(147,4).value
+sheet02["AB4"].value = sheet01.cell(148,4).value
+#貼り付けをしたエクセルの保存
+vc.save('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
+#以上、データの貼り付け完了
