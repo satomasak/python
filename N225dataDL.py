@@ -65,7 +65,7 @@ vc = px.load_workbook('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contra
 sheet02 = vc['vol']
 #貼り付けをする4行目に行を挿入
 sheet02.insert_rows(4)
-日付のセルに本日の日付を挿入
+#日付のセルに本日の日付を挿入
 sheet02["B4"] = day
 sheet02["L4"] = day
 #取引高のコピー
