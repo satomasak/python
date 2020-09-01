@@ -95,6 +95,15 @@ sheet02["V4"].value = sheet01.cell(42,4).value
 sheet02["X4"].value = sheet01.cell(37,4).value
 sheet02["Z4"].value = sheet01.cell(147,4).value
 sheet02["AB4"].value = sheet01.cell(148,4).value
+#挿入したセルに罫線を引くためのインポート
+from openpyxl.styles.borders import Border, Side
+#線の指定（細線）
+side = Side(style='thin')
+#罫線を引く場所の指定（右側）
+border = Border(right=side)
+#4行目1から29セルまでの繰り返し処理
+for i in range(1,29):
+    sheet02.cell(4, i).border = border
 #貼り付けをしたエクセルの保存
 vc.save('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
 #以上、データの貼り付け完了
