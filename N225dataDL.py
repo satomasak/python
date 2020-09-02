@@ -11,6 +11,8 @@
 #営業日以外はデータ更新が行われないため、if文で営業日であればプログラムを実行するように設定する
 #営業日のみ実行するためにjpbizdayのインポート
 import jpbizday as biz
+import datetime
+day = datetime.date.today()
 #営業日であれば真
 if biz.is_bizday(day):
 
@@ -41,8 +43,6 @@ if biz.is_bizday(day):
 
     #２．以下、ダウンロードファイルを任意のディレクトリへ移動するためのコード
     #OSEデリバティブ建玉残高表のファイル名に日付が含まれているため、当日の日付をファイル名に付けるように加工する
-    import datetime
-    day = datetime.date.today()
     #本日の日付であるdatetime型のデータ(2020-08-28)からハイフンを抜く
     dayName = day.strftime('%Y%m%d')
     #日付＋共通ファイル名
