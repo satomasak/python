@@ -105,11 +105,14 @@ if biz.is_bizday(day):
     from openpyxl.styles.borders import Border, Side
     #線の指定（細線）
     side = Side(style='thin')
-    #罫線を引く場所の指定（右側）
-    border = Border(right=side)
+    #罫線を引く場所の指定（右側, 下）
+    border = Border(right=side, bottom=side, left=side)
     #4行目1から29セルまでの繰り返し処理
-    for i in range(1,29):
+    for i in range(2,29):
+        #cell(4,11)は空白なので罫線を引く処理をスキップする
+        if i == 11: continue
         sheet02.cell(4, i).border = border
     #貼り付けをしたエクセルの保存
     vc.save('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
     #以上、データの貼り付け完了
+else:print("営業日以外のためデータ収集は行いません")
