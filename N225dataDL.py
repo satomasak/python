@@ -1,20 +1,27 @@
-#!/usr/bin/env python
 # coding: utf-8
-#JPXのサイトから特定のファイルをダウンロードし加工するプログラムを作成する
-#デリバティブ建玉残高表は毎営業日更新されるため、直近のデータ以外は収集できない。データ加工を自動化できるとDLし忘れがなく効率化が可能
-#１．JPXサイトにアクセスし特定のファイルをダウンロードする
+#JPXのサイトから特定のファイルを1日1回だけダウンロードし加工するプログラムを作成する
+#デリバティブ建玉残高表は毎営業日20:00頃に更新されるため、直近のデータ以外は収集できない。データ加工を自動化できるとDLし忘れがなく効率化が可能
+
+#使用ライブラリ
+#jpbizday　datetime　selenium　time　shutil　openpyxl　xlrd
+
+#１．JPXサイトにアクセスしデリバティブ建玉残高表をダウンロードする
 #２．ダウンロードディレクトリから任意のディレクトリへファイルを移動する
-#3.　デリバティブ建玉残高表から必要なデータを別のエクセルに張り付ける
+#３．デリバティブ建玉残高表から必要なデータを別のエクセルに張り付ける
 
 #自動化　PCの起動、プログラムの実行、シャットダウンはPCのBIOSやタスクスケジューラで設定
 #毎日20:30にプログラムを実行するようにタスクスケジューラで設定
+#ここまでは各PC上の設定になります。
+#以下pythonでの処理
 #営業日以外はデータ更新が行われないため、if文で営業日であればプログラムを実行するように設定する
 #営業日のみ実行するためにjpbizdayのインポート
 import jpbizday as biz
 import datetime
 day = datetime.date.today()
-#営業日であれば真
+#営業日であれば真、データ収集の処理を実行する
 if biz.is_bizday(day):
+    print("デリバティブ取引高・残玉のデータ収集を開始します。")
+
 
     #１．以下、JPXのサイトに接続し、デリバティブ建玉残高表をダウンロードするためのコード
     from selenium import webdriver
@@ -37,8 +44,9 @@ if biz.is_bizday(day):
     dataDL.click()
     #ダウンロード時間に余裕を持たせるための待機
     time.sleep(10)
+    #開いたwebページを閉じる
+    page01.close()
     #以上、ソースになるファイルのダウンロード完了
-
 
 
     #２．以下、ダウンロードファイルを任意のディレクトリへ移動するためのコード
@@ -52,7 +60,7 @@ if biz.is_bizday(day):
     import shutil
     #ダウンロードディレクトリから指定ディレクトリへ移動　
     #ここではDownloads⇒datasource　設定に応じて任意のディレクトリへ変更
-    shutil.move('C:\\Users\\sato\\Downloads\\'+fileName, 'C:\\Users\\sato\\Desktop\\datasource')
+    shutil.move('C:\\Users\\sato\\Downloads\\'+fileName, 'C:\\Users\\sato\\Desktop\\dataSource\\vol')
     #以上、ソースになるダウンロードファイルの移動完了
 
 
@@ -62,11 +70,11 @@ if biz.is_bizday(day):
     #デリバティブ建玉残高表の拡張子が.xlsであるため、excel2003以前のエクセルを操作するためのxlrdライブラリをインポート
     import xlrd
     #デリバティブ建玉残高表の読み込み
-    ds = xlrd.open_workbook('C:\\Users\\sato\\Desktop\\datasource\\'+fileName)
+    ds = xlrd.open_workbook('C:\\Users\\sato\\Desktop\\dataSource\\vol\\'+fileName)
     #シートの読み込み
     sheet01 = ds.sheet_by_name('デリバティブ建玉残高状況')
     #貼り付け先エクセルの読み込み
-    vc = px.load_workbook('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
+    vc = px.load_workbook('C:\\Users\\sato\\Desktop\\futuresData\\volume&open_contract.xlsx')
     #シートの読み込み
     sheet02 = vc['vol']
     #貼り付けをする4行目に行を挿入
@@ -113,6 +121,8 @@ if biz.is_bizday(day):
         if i == 11: continue
         sheet02.cell(4, i).border = border
     #貼り付けをしたエクセルの保存
-    vc.save('C:\\Users\\sato\\Desktop\\futuresdata\\volume&open_contract.xlsx')
+    vc.save('C:\\Users\\sato\\Desktop\\futuresData\\volume&open_contract.xlsx')
     #以上、データの貼り付け完了
-else:print("営業日以外のためデータ収集は行いません")
+    print("データの収集が完了しました。")
+
+else:print("営業日以外のためデータ収集は行いません。")
