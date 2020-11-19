@@ -47,9 +47,9 @@ for i in lettucePurchaseList['商品名']:
     lettuceBuyData.append(nam)
 
 
-import xlwt
-import openpyxl l
-import datetime 
+
+import openpyxl
+import datetime
 
 day = datetime.date.today()
 dayName = day.strftime('%Y%m%d')
@@ -58,3 +58,7 @@ filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
 with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
     tomatoBuyData[0].to_excel(writer, sheet_name='トマト仕入れ')
 
+sellFileName = dayName + 'トマト販売データ.xlsx'
+sellFilePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+sellFileName
+with pd.ExcelWriter(sellFilePath, engine='openpyxl') as writer:
+    tomatoSellData[0].to_excel(writer, sheet_name='トマト販売')
