@@ -1,14 +1,14 @@
 ﻿import pandas as pd
 #sekkdfに必要なカラム番号だけのデータフレームを売上.xlsから抽出する
-selldf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\売上.xls',usecols=[1,5,6,11,12,15,17,18])
+selldf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\売上.xls',usecols=[1,5,6,9,11,12,15,17,18])
 
 #procuctRistの作成　商品一覧　重複を削除し、ユニークデーターを抽出
 productList = selldf[['取引区分','商品名']].drop_duplicates()
 #purchaseRistの作成　仕入れ一覧　取引区分の「掛その他」で抽出
-purchaseList = productList[productRist['取引区分'] == '掛その他']
+purchaseList = productList[productList['取引区分'] == '掛その他']
 #仕入れ一覧の中からトマト、レタスを区分
 tomatoPurchaseList = purchaseList[purchaseList['商品名'].str.contains('トマト|日向|ｷｬﾛﾙ|桃姫|ﾄﾏﾄ')]
-lettucePurchaseList = purchaseList[purchaseRist['商品名'].str.contains('レタス|ﾚﾀｽ')]
+lettucePurchaseList = purchaseList[purchaseList['商品名'].str.contains('レタス|ﾚﾀｽ')]
 
 
 
