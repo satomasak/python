@@ -45,3 +45,10 @@ for i in lettucePurchaseList['商品名']:
     nam = buydf[buydf['商品名']== i]
     nam = nam.groupby(['仕入先ｺｰﾄﾞ','仕入先名','取引年月日','商品名','仕入単価','行摘要']).sum()
     lettuceBuyData.append(nam)
+
+
+import xlwt
+import openpyxl as xl
+import datetime 
+
+day = datetime.date.today()
