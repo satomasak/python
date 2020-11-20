@@ -10,19 +10,26 @@ purchaseList = productList[productList['取引区分'] == '掛その他']
 tomatoPurchaseList = purchaseList[purchaseList['商品名'].str.contains('トマト|日向|ｷｬﾛﾙ|桃姫|ﾄﾏﾄ')]
 lettucePurchaseList = purchaseList[purchaseList['商品名'].str.contains('レタス|ﾚﾀｽ')]
 
+#返品以外のトマト商品のリスト
+x = tomatoPurchaseList [~tomatoPurchaseList ['商品名'].str.contains('返品')]
+simpleListT = x['商品名']
+#返品以外のレタス仕入商品のリスト
+x = lettucePurchaseList [~lettucePurchaseList ['商品名'].str.contains('返品')]
+simpleListL = x['商品名']
 
 
-#リスト：tomatoSellDataに売上一覧からトマト仕入れ商品の売上データを商品名、得意先、売上単価ごとにグループ化する
+
+#トマト仕入れ商品の売上データを商品名、得意先、売上単価ごとにグループ化する(返品以外)
 tomatoSellData = []
-for i in tomatoPurchaseList['商品名']:
+for i in simpleListT:
     nam = selldf[selldf['商品名']== i]
     #得意先コード、得意先名、商品名、売上単価をキーにして、同じ売上・数量は合計する
     nam = nam.groupby(['得意先ｺｰﾄﾞ','得意先名','取引年月日','商品名','売上単価']).sum()
     tomatoSellData.append(nam)
 
-#リスト：lettuceSellDataに売上一覧から仕入れレタスの売上データを商品名、得意先、売上単価ごとにグループ分けする
+#レタスの売上データを商品名、得意先、売上単価ごとにグループ分けする(返品以外)
 lettuceSellData = []
-for i in lettucePurchaseList['商品名']:
+for i in simpleListL:
     nam = selldf[selldf['商品名']== i]
     nam = nam.groupby(['得意先ｺｰﾄﾞ','得意先名','取引年月日','商品名','売上単価']).sum()
     lettuceSellData.append(nam)
@@ -34,14 +41,14 @@ buydf = pd.read_excel('C:\\Users\\Himuka\\Desktop\\purchaseData\\仕入れ.xls',use
 
 #仕入一覧からトマトのデータを抽出し、仕入先・商品・仕入単価ごとにグループ化する
 tomatoBuyData = []
-for i in tomatoPurchaseList['商品名']:
+for i in simpleListT:
     nam = buydf[buydf['商品名']== i]
     nam = nam.groupby(['仕入先ｺｰﾄﾞ','仕入先名','取引年月日','商品名','仕入単価']).sum()
     tomatoBuyData.append(nam)
 
 #仕入れ一覧から仕入レタスのデータを抽出し、仕入先・商品・仕入単価ごとにグループ化する
 lettuceBuyData = []
-for i in lettucePurchaseList['商品名']:
+for i in simpleListL:
     nam = buydf[buydf['商品名']== i]
     nam = nam.groupby(['仕入先ｺｰﾄﾞ','仕入先名','取引年月日','商品名','仕入単価','行摘要']).sum()
     lettuceBuyData.append(nam)
@@ -53,13 +60,20 @@ import datetime
 filePath = 'C:\\Users\\Himuka\\Desktop\\sellData\\仕入商品売上データ.xlsx'
 sellData = openpyxl.load_workbook(filePath)
 
-sellDataSheet = sellData['Sheet1']
-x = purchaseList[~purchaseList['商品名'].str.contains('返品')]
-simplePurchaseList = x['商品名']
 
+
+tomatoSheet = sellData['tomato']
 i = 3
-for nam in simplePurchaseList:
-    sellDataSheet.cell(row=i,column=3).value = nam
+for nam in simpleListT:
+    tomatoSheet.cell(row=i,column=3).value = nam
+    i += 1
+
+
+
+lettuceSheet = sellData['lettuce']
+i = 3
+for nam in simpleListL:
+    lettuceSheet.cell(row=i,column=3).value = nam
     i += 1
 
 
