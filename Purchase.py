@@ -1,64 +1,66 @@
-ï»¿import pandas as pd
-#sekkdfã«å¿…è¦ãªã‚«ãƒ©ãƒ ç•ªå·ã ã‘ã®ãƒ‡ãƒ¼ã‚¿ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’å£²ä¸Š.xlsã‹ã‚‰æŠ½å‡ºã™ã‚‹
-selldf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\å£²ä¸Š.xls',usecols=[1,5,6,11,12,15,17,18])
+import pandas as pd
+#sekkdf‚É•K—v‚ÈƒJƒ‰ƒ€”Ô†‚¾‚¯‚Ìƒf[ƒ^ƒtƒŒ[ƒ€‚ğ”„ã.xls‚©‚ç’Šo‚·‚é
+selldf = pd.read_excel('C:\\Users\\Himuka\\Desktop\\purchaseData\\”„ã.xls',usecols=[1,5,6,9,11,12,15,17,18])
 
-#procuctRistã®ä½œæˆã€€å•†å“ä¸€è¦§ã€€é‡è¤‡ã‚’å‰Šé™¤ã—ã€ãƒ¦ãƒ‹ãƒ¼ã‚¯ãƒ‡ãƒ¼ã‚¿ãƒ¼ã‚’æŠ½å‡º
-productList = selldf[['å–å¼•åŒºåˆ†','å•†å“å']].drop_duplicates()
-#purchaseRistã®ä½œæˆã€€ä»•å…¥ã‚Œä¸€è¦§ã€€å–å¼•åŒºåˆ†ã®ã€Œæ›ãã®ä»–ã€ã§æŠ½å‡º
-purchaseList = productList[productRist['å–å¼•åŒºåˆ†'] == 'æ›ãã®ä»–']
-#ä»•å…¥ã‚Œä¸€è¦§ã®ä¸­ã‹ã‚‰ãƒˆãƒãƒˆã€ãƒ¬ã‚¿ã‚¹ã‚’åŒºåˆ†
-tomatoPurchaseList = purchaseList[purchaseList['å•†å“å'].str.contains('ãƒˆãƒãƒˆ|æ—¥å‘|ï½·ï½¬ï¾›ï¾™|æ¡ƒå§«|ï¾„ï¾ï¾„')]
-lettucePurchaseList = purchaseList[purchaseRist['å•†å“å'].str.contains('ãƒ¬ã‚¿ã‚¹|ï¾šï¾€ï½½')]
+#procuctRist‚Ìì¬@¤•iˆê——@d•¡‚ğíœ‚µAƒ†ƒj[ƒNƒf[ƒ^[‚ğ’Šo
+productList = selldf[['æˆø‹æ•ª','¤•i–¼']].drop_duplicates()
+#purchaseRist‚Ìì¬@d“ü‚êˆê——@æˆø‹æ•ª‚ÌuŠ|‚»‚Ì‘¼v‚Å’Šo
+purchaseList = productList[productList['æˆø‹æ•ª'] == 'Š|‚»‚Ì‘¼']
+#d“ü‚êˆê——‚Ì’†‚©‚çƒgƒ}ƒgAƒŒƒ^ƒX‚ğ‹æ•ª
+tomatoPurchaseList = purchaseList[purchaseList['¤•i–¼'].str.contains('ƒgƒ}ƒg|“úŒü|·¬ÛÙ|“•P|ÄÏÄ')]
+lettucePurchaseList = purchaseList[purchaseList['¤•i–¼'].str.contains('ƒŒƒ^ƒX|ÚÀ½')]
 
 
 
-#ãƒªã‚¹ãƒˆï¼štomatoSellDataã«å£²ä¸Šä¸€è¦§ã‹ã‚‰ãƒˆãƒãƒˆä»•å…¥ã‚Œå•†å“ã®å£²ä¸Šãƒ‡ãƒ¼ã‚¿ã‚’å•†å“åã€å¾—æ„å…ˆã€å£²ä¸Šå˜ä¾¡ã”ã¨ã«ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã™ã‚‹
+#ƒŠƒXƒgFtomatoSellData‚É”„ãˆê——‚©‚çƒgƒ}ƒgd“ü‚ê¤•i‚Ì”„ãƒf[ƒ^‚ğ¤•i–¼A“¾ˆÓæA”„ã’P‰¿‚²‚Æ‚ÉƒOƒ‹[ƒv‰»‚·‚é
 tomatoSellData = []
-for i in tomatoPurchaseList['å•†å“å']:
-    nam = selldf[selldf['å•†å“å']== i]
-    #å¾—æ„å…ˆã‚³ãƒ¼ãƒ‰ã€å¾—æ„å…ˆåã€å•†å“åã€å£²ä¸Šå˜ä¾¡ã‚’ã‚­ãƒ¼ã«ã—ã¦ã€åŒã˜å£²ä¸Šãƒ»æ•°é‡ã¯åˆè¨ˆã™ã‚‹
-    nam = nam.groupby(['å¾—æ„å…ˆï½ºï½°ï¾„ï¾','å¾—æ„å…ˆå','å–å¼•å¹´æœˆæ—¥','å•†å“å','å£²ä¸Šå˜ä¾¡']).sum()
+for i in tomatoPurchaseList['¤•i–¼']:
+    nam = selldf[selldf['¤•i–¼']== i]
+    #“¾ˆÓæƒR[ƒhA“¾ˆÓæ–¼A¤•i–¼A”„ã’P‰¿‚ğƒL[‚É‚µ‚ÄA“¯‚¶”„ãE”—Ê‚Í‡Œv‚·‚é
+    nam = nam.groupby(['“¾ˆÓæº°ÄŞ','“¾ˆÓæ–¼','æˆø”NŒ“ú','¤•i–¼','”„ã’P‰¿']).sum()
     tomatoSellData.append(nam)
 
-#ãƒªã‚¹ãƒˆï¼šlettuceSellDataã«å£²ä¸Šä¸€è¦§ã‹ã‚‰ä»•å…¥ã‚Œãƒ¬ã‚¿ã‚¹ã®å£²ä¸Šãƒ‡ãƒ¼ã‚¿ã‚’å•†å“åã€å¾—æ„å…ˆã€å£²ä¸Šå˜ä¾¡ã”ã¨ã«ã‚°ãƒ«ãƒ¼ãƒ—åˆ†ã‘ã™ã‚‹
+#ƒŠƒXƒgFlettuceSellData‚É”„ãˆê——‚©‚çd“ü‚êƒŒƒ^ƒX‚Ì”„ãƒf[ƒ^‚ğ¤•i–¼A“¾ˆÓæA”„ã’P‰¿‚²‚Æ‚ÉƒOƒ‹[ƒv•ª‚¯‚·‚é
 lettuceSellData = []
-for i in lettucePurchaseList['å•†å“å']:
-    nam = selldf[selldf['å•†å“å']== i]
-    nam = nam.groupby(['å¾—æ„å…ˆï½ºï½°ï¾„ï¾','å¾—æ„å…ˆå','å–å¼•å¹´æœˆæ—¥','å•†å“å','å£²ä¸Šå˜ä¾¡']).sum()
+for i in lettucePurchaseList['¤•i–¼']:
+    nam = selldf[selldf['¤•i–¼']== i]
+    nam = nam.groupby(['“¾ˆÓæº°ÄŞ','“¾ˆÓæ–¼','æˆø”NŒ“ú','¤•i–¼','”„ã’P‰¿']).sum()
     lettuceSellData.append(nam)
 
 
 
-#ä»•å…¥ã‚Œã‚¨ã‚¯ã‚»ãƒ«ã‹ã‚‰å¿…è¦ãªåˆ—ã®ã¿ã‚’èª­ã¿è¾¼ã‚€
-buydf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\ä»•å…¥ã‚Œ.xls',usecols=[1,5,6,9,11,12,15,17,18,21,22])
+#d“ü‚êƒGƒNƒZƒ‹‚©‚ç•K—v‚È—ñ‚Ì‚İ‚ğ“Ç‚İ‚Ş
+buydf = pd.read_excel('C:\\Users\\Himuka\\Desktop\\purchaseData\\d“ü‚ê.xls',usecols=[1,5,6,9,11,12,15,17,18,21,22])
 
-#ä»•å…¥ä¸€è¦§ã‹ã‚‰ãƒˆãƒãƒˆã®ãƒ‡ãƒ¼ã‚¿ã‚’æŠ½å‡ºã—ã€ä»•å…¥å…ˆãƒ»å•†å“ãƒ»ä»•å…¥å˜ä¾¡ã”ã¨ã«ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã™ã‚‹
+#d“üˆê——‚©‚çƒgƒ}ƒg‚Ìƒf[ƒ^‚ğ’Šo‚µAd“üæE¤•iEd“ü’P‰¿‚²‚Æ‚ÉƒOƒ‹[ƒv‰»‚·‚é
 tomatoBuyData = []
-for i in tomatoPurchaseList['å•†å“å']:
-    nam = buydf[buydf['å•†å“å']== i]
-    nam = nam.groupby(['ä»•å…¥å…ˆï½ºï½°ï¾„ï¾','ä»•å…¥å…ˆå','å–å¼•å¹´æœˆæ—¥','å•†å“å','ä»•å…¥å˜ä¾¡']).sum()
+for i in tomatoPurchaseList['¤•i–¼']:
+    nam = buydf[buydf['¤•i–¼']== i]
+    nam = nam.groupby(['d“üæº°ÄŞ','d“üæ–¼','æˆø”NŒ“ú','¤•i–¼','d“ü’P‰¿']).sum()
     tomatoBuyData.append(nam)
 
-#ä»•å…¥ã‚Œä¸€è¦§ã‹ã‚‰ä»•å…¥ãƒ¬ã‚¿ã‚¹ã®ãƒ‡ãƒ¼ã‚¿ã‚’æŠ½å‡ºã—ã€ä»•å…¥å…ˆãƒ»å•†å“ãƒ»ä»•å…¥å˜ä¾¡ã”ã¨ã«ã‚°ãƒ«ãƒ¼ãƒ—åŒ–ã™ã‚‹
+#d“ü‚êˆê——‚©‚çd“üƒŒƒ^ƒX‚Ìƒf[ƒ^‚ğ’Šo‚µAd“üæE¤•iEd“ü’P‰¿‚²‚Æ‚ÉƒOƒ‹[ƒv‰»‚·‚é
 lettuceBuyData = []
-for i in lettucePurchaseList['å•†å“å']:
-    nam = buydf[buydf['å•†å“å']== i]
-    nam = nam.groupby(['ä»•å…¥å…ˆï½ºï½°ï¾„ï¾','ä»•å…¥å…ˆå','å–å¼•å¹´æœˆæ—¥','å•†å“å','ä»•å…¥å˜ä¾¡','è¡Œæ‘˜è¦']).sum()
+for i in lettucePurchaseList['¤•i–¼']:
+    nam = buydf[buydf['¤•i–¼']== i]
+    nam = nam.groupby(['d“üæº°ÄŞ','d“üæ–¼','æˆø”NŒ“ú','¤•i–¼','d“ü’P‰¿','s“E—v']).sum()
     lettuceBuyData.append(nam)
 
 
 
 import openpyxl
 import datetime
+filePath = 'C:\\Users\\Himuka\\Desktop\\sellData\\d“ü¤•i”„ãƒf[ƒ^.xlsx'
+sellData = openpyxl.load_workbook(filePath)
 
-day = datetime.date.today()
-dayName = day.strftime('%Y%m%d')
-fileName = dayName + 'ä»•å…¥ãƒ‡ãƒ¼ã‚¿.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
-with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
-    tomatoBuyData[0].to_excel(writer, sheet_name='ãƒˆãƒãƒˆä»•å…¥ã‚Œ')
+sellDataSheet = sellData['Sheet1']
+x = purchaseList[~purchaseList['¤•i–¼'].str.contains('•Ô•i')]
+simplePurchaseList = x['¤•i–¼']
 
-sellFileName = dayName + 'ãƒˆãƒãƒˆè²©å£²ãƒ‡ãƒ¼ã‚¿.xlsx'
-sellFilePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+sellFileName
-with pd.ExcelWriter(sellFilePath, engine='openpyxl') as writer:
-    tomatoSellData[0].to_excel(writer, sheet_name='ãƒˆãƒãƒˆè²©å£²')
+i = 3
+for nam in simplePurchaseList:
+    sellDataSheet.cell(row=i,column=3).value = nam
+    i += 1
+
+
+sellData.save(filePath)
