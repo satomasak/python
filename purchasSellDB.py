@@ -4,15 +4,14 @@ import pandas as pd
 #sekkdfに必要なカラム番号だけのデータフレームを売上.xlsから抽出する
 selldf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\売上.xls',usecols=[1,5,6,9,11,12,15,17,18])
 
-#商品基本データの抽出・加工
+
 #procuctRistの作成　商品一覧　重複を削除し、ユニークデーターを抽出
 productList = selldf[['取引区分','商品名']].drop_duplicates()
 #purchaseRistの作成　仕入れ一覧　取引区分の「掛その他」で抽出
 purchaseList = productList[productList['取引区分'] == '掛その他']
-#売上一覧の中からトマト、レタスを区分
+#仕入れ一覧の中からトマト、レタスを区分
 tomatoPurchaseList = purchaseList[purchaseList['商品名'].str.contains('トマト|日向|ｷｬﾛﾙ|桃姫|ﾄﾏﾄ')]
 lettucePurchaseList = purchaseList[purchaseList['商品名'].str.contains('レタス|ﾚﾀｽ')]
-
 
 
 #返品以外のトマト商品のリスト
@@ -30,7 +29,7 @@ x = lettucePurchaseList [lettucePurchaseList ['商品名'].str.contains('返品'
 returnedL = x['商品名']
 
 
-#売上データの加工　必要なものだけまとめる作業
+
 #トマト仕入れ商品の売上データを商品名、得意先、売上単価ごとにグループ化する(返品以外)
 tomatoSellData = []
 for i in simpleListT:
@@ -64,7 +63,7 @@ for i in returnedL:
 
 
 
-#売上データDB作成　パス先にデータベースになるエクセルを作成する
+#売上データDB作成
 import openpyxl
 import datetime
 day = datetime.date.today()
@@ -83,6 +82,17 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
         tomatoSellData[j].to_excel(writer, sheet_name=i)
         j += 1
 
+#売上列の3桁カンマ区切り
+wb = openpyxl.load_workbook(filePath)
+for i in simpleListT:
+    sh = wb[i]
+    a = sh.max_row
+    for b in range(a):
+        sh.cell(row=b+1,column=6).number_format = '#,##0'
+wb.save(filePath)
+
+
+
 #レタス販売データベース
 fileName = dayName + '仕入レタス販売データ.xlsx'
 filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
@@ -95,6 +105,15 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
     for i in simpleListL:
         lettuceSellData[j].to_excel(writer, sheet_name=i)
         j += 1
+#売上列の3桁カンマ区切り
+wb = openpyxl.load_workbook(filePath)
+for i in simpleListL:
+    sh = wb[i]
+    a = sh.max_row
+    for b in range(a):
+        sh.cell(row=b+1,column=6).number_format = '#,##0'
+wb.save(filePath)
+
 
 #トマト売上返品リストの作成
 fileName = dayName + 'トマト売上返品データ.xlsx'
@@ -109,6 +128,15 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
         returnedSimpleListT[j].to_excel(writer, sheet_name=i)
         j += 1
 
+#売上列の3桁カンマ区切り
+wb = openpyxl.load_workbook(filePath)
+for i in returnedT:
+    sh = wb[i]
+    a = sh.max_row
+    for b in range(a):
+        sh.cell(row=b+1,column=6).number_format = '#,##0'
+wb.save(filePath)
+
 #レタス売上返品データベース
 fileName = dayName + '仕入レタス売上返品データ.xlsx'
 filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
@@ -121,3 +149,12 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
     for i in returnedL:
         returnedSimpleListL[j].to_excel(writer, sheet_name=i)
         j += 1
+
+#売上列の3桁カンマ区切り
+wb = openpyxl.load_workbook(filePath)
+for i in returnedL:
+    sh = wb[i]
+    a = sh.max_row
+    for b in range(a):
+        sh.cell(row=b+1,column=6).number_format = '#,##0'
+wb.save(filePath)
