@@ -1,10 +1,10 @@
 #伝票作成システムからエクスポートしたデータをもとに仕入商品ごとの売り上げデータベースを作成する
 
 import pandas as pd
-
+folderPath = ''C:\\Users\\sato\\Desktop\\purchaseData\\'
 ################売上DB作成#####################################
 #selldfに必要なカラム番号だけのデータフレームを売上.xlsから抽出する
-selldf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\売上.xls',usecols=[1,5,6,9,11,12,15,17,18])
+selldf = pd.read_excel(folderPath+'売上.xls',usecols=[1,5,6,9,11,12,15,17,18])
 #欠損値を’なし’で置き換える
 selldf = selldf.fillna('なし')
 
@@ -74,7 +74,7 @@ dayName = day.strftime('%Y%m%d')
 
 #トマト販売データベース
 fileName = dayName + 'トマト販売データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in simpleListT:
     wb.create_sheet(i)
@@ -98,7 +98,7 @@ wb.save(filePath)
 
 #レタス販売データベース
 fileName = dayName + '仕入レタス販売データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in simpleListL:
     wb.create_sheet(i)
@@ -120,7 +120,7 @@ wb.save(filePath)
 
 #トマト売上返品リストの作成
 fileName = dayName + 'トマト売上返品データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in returnedT:
     wb.create_sheet(i)
@@ -142,7 +142,7 @@ wb.save(filePath)
 
 #レタス売上返品データベース
 fileName = dayName + '仕入レタス売上返品データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in returnedL:
     wb.create_sheet(i)
@@ -168,7 +168,7 @@ print('販売データ作成')
 
 
 #######################仕入DB作成##########################
-buydf = pd.read_excel('C:\\Users\\sato\\Desktop\\purchaseData\\仕入れ.xls',usecols=[1,5,6,9,11,12,15,17,22], skip_blank_lines=False)
+buydf = pd.read_excel(folderPath+'仕入れ.xls',usecols=[1,5,6,9,11,12,15,17,22], skip_blank_lines=False)
 #欠損値を’なし’で置き換える
 buydf = buydf.fillna('なし')
 
@@ -228,7 +228,7 @@ for i in returnedBL:
 #仕入DB作成
 #トマト仕入データベース
 fileName = dayName + 'トマト仕入データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in simpleListBT:
     wb.create_sheet(i)
@@ -243,7 +243,7 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
 
 #レタス仕入データベース
 fileName = dayName + '仕入レタス仕入データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in simpleListBL:
     wb.create_sheet(i)
@@ -257,7 +257,7 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
 
 #トマト仕入返品リストの作成
 fileName = dayName + 'トマト仕入返品データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in returnedBT:
     wb.create_sheet(i)
@@ -272,7 +272,7 @@ with pd.ExcelWriter(filePath, engine='openpyxl') as writer:
 
 #レタス仕入返品データベース
 fileName = dayName + '仕入レタス売上返品データ.xlsx'
-filePath = 'C:\\Users\\sato\\Desktop\\sellData\\'+fileName
+filePath = folderPath+fileName
 wb = openpyxl.Workbook()
 for i in returnedBL:
     wb.create_sheet(i)
