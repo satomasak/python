@@ -1,7 +1,7 @@
 #伝票作成システムからエクスポートしたデータをもとに仕入商品ごとの売り上げデータベースを作成する
 
 import pandas as pd
-folderPath = ''C:\\Users\\sato\\Desktop\\purchaseData\\'
+folderPath = 'C:\\Users\\sato\\Desktop\\purchaseData\\'
 ################売上DB作成#####################################
 #selldfに必要なカラム番号だけのデータフレームを売上.xlsから抽出する
 selldf = pd.read_excel(folderPath+'売上.xls',usecols=[1,5,6,9,11,12,15,17,18])
